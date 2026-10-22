@@ -1,0 +1,43 @@
+bundle:
+  name: omnichannel_analytics
+
+sync:
+  include:
+    - transform/
+    - replications/
+    - scripts/
+  exclude:
+    - "**/.env*"
+    - "**/target/"
+    - "**/dbt_packages/"
+    - "**/.git"
+
+targets:
+  dev:
+    default: true
+    workspace:
+      host: <DATABRICKS-HOST>
+
+resources:
+  jobs:
+    omnichannel_pipeline:
+      name: "Omnichannel Analytics Pipeline"
+
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "3"
+            dependencies:
+              - "dbt==2.0.8"
+
+      tasks:
+        - task_key: run_dbt_models
+          environment_key: default
+
+          dbt_task:
+            project_directory: ./transform
+            commands:
+              - "dbt deps"
+              - "dbt build"
+            warehouse_id: <DATABRICKS-WAREHOUSE-ID>
+            catalog: OMNI_MANAGEMENT

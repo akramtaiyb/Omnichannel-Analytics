@@ -1,0 +1,76 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: Customer dimension.
+    columns:
+      - name: sk_customer
+        description: Surrogate key for the customer.
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_channels
+    description: Sales channel dimension (web, app, in-store, etc.).
+    columns:
+      - name: sk_channel
+        description: Surrogate key for the channel.
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_date
+    description: Calendar dimension, one row per day.
+    columns:
+      - name: date_day
+        description: Date at day grain.
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_products
+    description: Product dimension.
+    columns:
+      - name: sk_product
+        description: Surrogate key for the product.
+        tests:
+          - unique
+          - not_null
+
+  - name: fct_purchase_history
+    description: One row per product purchase event, at the customer × channel × product × date grain.
+    columns:
+      - name: sk_customer
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: sk_customer
+      - name: sk_channel
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_channels')
+                field: sk_channel
+      - name: sk_product
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_products')
+                field: sk_product
+
+  - name: fct_visit_history
+    description: One row per store visit, at the customer × channel × date grain.
+    columns:
+      - name: sk_customer
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: sk_customer
+      - name: sk_channel
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_channels')
+                field: sk_channel

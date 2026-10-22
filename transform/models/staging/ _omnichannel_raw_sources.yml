@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: omnichannel
+    database: OMNI_MANAGEMENT
+    schema: bronze
+    tables:
+      - name: channels
+      - name: customers
+      - name: products
+      - name: visit_history
+      - name: purchase_history

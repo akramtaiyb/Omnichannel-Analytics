@@ -1,0 +1,23 @@
+source: MYSQL
+target: DATABRICKS
+
+defaults:
+  mode: full-refresh
+  target_options:
+    column_casing: snake
+
+streams:
+  OMNI_MANAGEMENT.channels:
+    object: channels
+
+  OMNI_MANAGEMENT.customers:
+    object: customers
+
+  OMNI_MANAGEMENT.products:
+    object: products
+
+  OMNI_MANAGEMENT.purchaseHistory:
+    object: purchase_history
+
+  OMNI_MANAGEMENT.visitHistory:
+    object: visit_history
